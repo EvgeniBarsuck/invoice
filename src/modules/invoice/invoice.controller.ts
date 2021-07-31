@@ -1,6 +1,7 @@
-import { Controller, Post, Body, Get } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, UseFilters } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateInvoiceDto } from './dto/create-invoice.dto';
+import { InvoiceHttpExceptionFilter } from './invoice-http-exception.filter';
 import { InvoiceService } from './invoice.service';
 import { InvoiceValidationPipe } from './invoice.validator';
 
@@ -16,6 +17,7 @@ export class InvoiceController {
   })
   @ApiBody({ type: CreateInvoiceDto })
   @Post()
+  @UseFilters(InvoiceHttpExceptionFilter)
   async create(
     @Body(new InvoiceValidationPipe())
     createInvoiceDto: CreateInvoiceDto,
@@ -23,13 +25,24 @@ export class InvoiceController {
     return this.invoiceService.create(createInvoiceDto);
   }
 
-  @ApiOperation({ summary: 'Create invoice' })
+  @ApiOperation({ summary: 'Get all invoice' })
   @ApiResponse({
     status: 200,
-    description: 'Get all invoice',
+    description: 'Get all invoice successfully',
   })
   @Get()
   async findAll() {
     return this.invoiceService.findAll();
+  }
+
+  @ApiOperation({ summary: 'Get invoice by id' })
+  @ApiResponse({
+    status: 200,
+    description: 'Get invoice by id successfully',
+  })
+  @UseFilters(InvoiceHttpExceptionFilter)
+  @Get(':id')
+  async findById(@Param() id: string) {
+    return this.invoiceService.findById(id);
   }
 }
