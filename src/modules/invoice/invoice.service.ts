@@ -47,6 +47,20 @@ export class InvoiceService {
     }
   }
 
+  async updateById(id: string, updateInvoiceDto) {
+    try {
+      const invoice = await this.invoiceRepository.update(id, updateInvoiceDto);
+
+      if (!invoice) {
+        throw new HttpException('Invoice not found', HttpStatus.NOT_FOUND);
+      }
+
+      return await this.invoiceRepository.findOne(id);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
   async deleteById(id: string) {
     try {
       const invoice = await this.invoiceRepository.delete(id);

@@ -8,8 +8,10 @@ import {
   Delete,
   Response,
   HttpCode,
+  Put,
 } from '@nestjs/common';
 import {
+  ApiBadRequestResponse,
   ApiBody,
   ApiNoContentResponse,
   ApiNotFoundResponse,
@@ -18,6 +20,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { CreateInvoiceDto } from './dto/create-invoice.dto';
+import { UpdateInvoiceDto } from './dto/update-invoice.dto';
 import { InvoiceHttpExceptionFilter } from './invoice-http-exception.filter';
 import { InvoiceService } from './invoice.service';
 import { InvoiceValidationPipe } from './invoice.validator';
@@ -31,6 +34,10 @@ export class InvoiceController {
   @ApiResponse({
     status: 201,
     description: 'Invoice created successfully',
+  })
+  @ApiBadRequestResponse({
+    status: 400,
+    description: 'Bad request',
   })
   @ApiBody({ type: CreateInvoiceDto })
   @Post()
@@ -65,6 +72,28 @@ export class InvoiceController {
   @Get(':id')
   async findById(@Param() id: string) {
     return this.invoiceService.findById(id);
+  }
+
+  @ApiOperation({ summary: 'Update invoice by id' })
+  @ApiResponse({
+    status: 201,
+    description: 'Update invoice by id successfully',
+  })
+  @ApiNotFoundResponse({
+    status: 404,
+    description: 'Invoice not found',
+  })
+  @ApiBadRequestResponse({
+    status: 400,
+    description: 'Bad request',
+  })
+  @UseFilters(InvoiceHttpExceptionFilter)
+  @Put(':id')
+  async updatedById(
+    @Param() id: string,
+    @Body(new InvoiceValidationPipe()) updateInvoiceDto: UpdateInvoiceDto,
+  ) {
+    return this.invoiceService.updateById(id, updateInvoiceDto);
   }
 
   @ApiOperation({ summary: 'Delete invoice by id' })
