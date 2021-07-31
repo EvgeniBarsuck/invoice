@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Get } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateInvoiceDto } from './dto/create-invoice.dto';
 import { InvoiceService } from './invoice.service';
@@ -21,5 +21,15 @@ export class InvoiceController {
     createInvoiceDto: CreateInvoiceDto,
   ) {
     return this.invoiceService.create(createInvoiceDto);
+  }
+
+  @ApiOperation({ summary: 'Create invoice' })
+  @ApiResponse({
+    status: 200,
+    description: 'Get all invoice',
+  })
+  @Get()
+  async findAll() {
+    return this.invoiceService.findAll();
   }
 }

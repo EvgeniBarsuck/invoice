@@ -14,4 +14,8 @@ export class InvoiceService {
     const invoice = this.invoiceRepository.save(createInvoiceDto);
     return invoice;
   }
+
+  async findAll() {
+    return this.invoiceRepository.find();
+  }
 }
