@@ -46,4 +46,16 @@ export class InvoiceService {
       throw new InternalServerErrorException(error);
     }
   }
+
+  async deleteById(id: string) {
+    try {
+      const invoice = await this.invoiceRepository.delete(id);
+
+      if (!invoice) {
+        throw new HttpException('Invoice not found', HttpStatus.NOT_FOUND);
+      }
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
 }
