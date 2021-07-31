@@ -6,9 +6,9 @@ import {
   Param,
   UseFilters,
   Delete,
-  Response,
   HttpCode,
   Put,
+  Query,
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
@@ -19,6 +19,7 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { ConditionsInvoiceDto } from './dto/conditions-invoice.dto';
 import { CreateInvoiceDto } from './dto/create-invoice.dto';
 import { UpdateInvoiceDto } from './dto/update-invoice.dto';
 import { InvoiceHttpExceptionFilter } from './invoice-http-exception.filter';
@@ -55,8 +56,8 @@ export class InvoiceController {
     description: 'Get all invoice successfully',
   })
   @Get()
-  async findAll() {
-    return this.invoiceService.findAll();
+  async findAll(@Query() query: ConditionsInvoiceDto) {
+    return this.invoiceService.findAll(query);
   }
 
   @ApiOperation({ summary: 'Get invoice by id' })
