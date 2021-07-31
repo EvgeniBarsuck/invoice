@@ -5,7 +5,8 @@ import {
   HttpStatus,
   InternalServerErrorException,
 } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
+import { ConditionsInvoiceDto } from './dto/conditions-invoice.dto';
 import { CreateInvoiceDto } from './dto/create-invoice.dto';
 import { Invoice } from './invoice.entity';
 
@@ -25,9 +26,12 @@ export class InvoiceService {
     }
   }
 
-  async findAll() {
+  async findAll(conditions: ConditionsInvoiceDto) {
     try {
-      return await this.invoiceRepository.find();
+      return await this.invoiceRepository.find({
+        сontractorsName: Like(`%${conditions?.сontractorsName || ''}%`),
+        position: Like(`%${conditions?.position || ''}%`),
+      });
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
