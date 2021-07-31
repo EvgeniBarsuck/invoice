@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
-import { invoiceSwaggerSettings } from './invoice.swagger';
+import { invoiceSwaggerSettings } from './data/invoice.swagger';
 
 @Entity()
 export class Invoice {
