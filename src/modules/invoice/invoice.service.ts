@@ -92,7 +92,7 @@ export class InvoiceService {
         },
       );
 
-      if (!invoice) {
+      if (invoice.affected < 1) {
         throw new HttpException('Invoice not found', HttpStatus.NOT_FOUND);
       }
 
