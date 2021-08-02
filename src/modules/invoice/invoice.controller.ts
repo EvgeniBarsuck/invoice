@@ -109,7 +109,7 @@ export class InvoiceController {
   })
   @UseFilters(InvoiceHttpExceptionFilter)
   @Delete(':id')
-  async deleteById(@Param() id: string) {
+  async deleteById(@Param('id') id: string) {
     return this.invoiceService.deleteById(id);
   }
 }

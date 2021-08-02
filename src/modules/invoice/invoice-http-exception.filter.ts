@@ -6,6 +6,7 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
+const colors = require('colors');
 
 @Catch(HttpException)
 export class InvoiceHttpExceptionFilter implements ExceptionFilter {
@@ -18,6 +19,11 @@ export class InvoiceHttpExceptionFilter implements ExceptionFilter {
       exception instanceof HttpException
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
+
+    console.error(
+      '\x1b[31m',
+      `status: ${status}, message: ${exception.message}, url: ${request.url}`,
+    );
 
     response.status(status).json({
       statusCode: status,

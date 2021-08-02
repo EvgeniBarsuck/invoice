@@ -6,6 +6,7 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { Like, Repository } from 'typeorm';
+import { EventLog, EventType } from '../eventLog/enent-log.entity';
 import { ConditionsInvoiceDto } from './dto/conditions-invoice.dto';
 import { CreateInvoiceDto } from './dto/create-invoice.dto';
 import { Invoice } from './invoice.entity';
@@ -15,11 +16,20 @@ export class InvoiceService {
   constructor(
     @Inject('INVOICE_REPOSITORY')
     private invoiceRepository: Repository<Invoice>,
+    @Inject('EVENTLOG_REPOSITORY')
+    private eventlogRepository: Repository<EventLog>,
   ) {}
 
   async create(createInvoiceDto: CreateInvoiceDto) {
     try {
       const invoice = await this.invoiceRepository.save(createInvoiceDto);
+
+      await this.eventlogRepository.save({
+        createdAt: new Date(),
+        eventType: EventType.UPDATE_INVOICE,
+        event: invoice.id,
+      });
+
       return invoice;
     } catch (error) {
       throw new InternalServerErrorException(error);
@@ -59,7 +69,15 @@ export class InvoiceService {
         throw new HttpException('Invoice not found', HttpStatus.NOT_FOUND);
       }
 
-      return await this.invoiceRepository.findOne(id);
+      const resault = await this.invoiceRepository.findOne(id);
+
+      await this.eventlogRepository.save({
+        createdAt: new Date(),
+        eventType: EventType.UPDATE_INVOICE,
+        event: resault.id,
+      });
+
+      return resault;
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
@@ -67,11 +85,22 @@ export class InvoiceService {
 
   async deleteById(id: string) {
     try {
-      const invoice = await this.invoiceRepository.delete(id);
+      const invoice = await this.invoiceRepository.update(
+        { id: id, deleted: false },
+        {
+          deleted: true,
+        },
+      );
 
       if (!invoice) {
         throw new HttpException('Invoice not found', HttpStatus.NOT_FOUND);
       }
+
+      await this.eventlogRepository.save({
+        createdAt: new Date(),
+        eventType: EventType.UPDATE_INVOICE,
+        event: id,
+      });
     } catch (error) {
       throw new InternalServerErrorException(error);
     }

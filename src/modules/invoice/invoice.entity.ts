@@ -31,4 +31,8 @@ export class Invoice {
   @ApiProperty(invoiceSwaggerSettings.сontractorsName)
   @Column({ type: 'varchar', nullable: false })
   сontractorsName: string;
+
+  @ApiProperty(invoiceSwaggerSettings.сontractorsName)
+  @Column({ type: 'bool', nullable: false, default: false })
+  deleted: boolean;
 }
