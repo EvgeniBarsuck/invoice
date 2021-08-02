@@ -26,6 +26,4 @@ export const EventType ={
   ADD_INVOICE: 'Add.invoice',
   UPDATE_INVOICE: 'Update.invoice',
   DELETE_INVOICE: 'Delete.invoice',
-  FIND_ONE_INVOICE: 'Find.one.invoice',
-  FIND_ALL_INVOICE: 'Find.all.invoice',
 }

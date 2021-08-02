@@ -26,7 +26,7 @@ export class InvoiceService {
 
       await this.eventlogRepository.save({
         createdAt: new Date(),
-        eventType: EventType.UPDATE_INVOICE,
+        eventType: EventType.ADD_INVOICE,
         event: invoice.id,
       });
 
@@ -98,7 +98,7 @@ export class InvoiceService {
 
       await this.eventlogRepository.save({
         createdAt: new Date(),
-        eventType: EventType.UPDATE_INVOICE,
+        eventType: EventType.DELETE_INVOICE,
         event: id,
       });
     } catch (error) {
