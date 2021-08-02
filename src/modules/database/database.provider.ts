@@ -1,4 +1,5 @@
 import { createConnection } from 'typeorm';
+import { EventLog } from '../eventLog/enent-log.entity';
 import { Invoice } from '../invoice/invoice.entity';
 
 export const databaseProviders = [
@@ -12,7 +13,7 @@ export const databaseProviders = [
         username: process.env.POSTGRES_USER,
         password: process.env.POSTGRES_PASSWORD,
         database: process.env.POSTGRES_DB,
-        entities: [Invoice],
+        entities: [Invoice, EventLog],
         synchronize: true,
       }),
   },

@@ -60,4 +60,13 @@ export const invoiceSwaggerSettings = {
     example: 'First name last mame',
     nullable: false,
   },
+  delete: {
+    type: 'Boolean',
+    required: true,
+    default: false,
+    title: 'Deleting invoice',
+    description: 'Has the invoice been deleted',
+    example: 'false',
+    nullable: false,
+  },
 };
