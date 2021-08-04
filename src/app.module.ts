@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-
 import { ConfigModule } from '@nestjs/config';
+import { ContractorModule } from './modules/contractor/contractor.module';
 import { InvoiceModule } from './modules/invoice/invoice.module';
 
 @Module({
@@ -10,6 +10,7 @@ import { InvoiceModule } from './modules/invoice/invoice.module';
       isGlobal: true,
     }),
     InvoiceModule,
+    ContractorModule,
   ],
 })
 export class AppModule {}
