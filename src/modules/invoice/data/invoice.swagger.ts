@@ -52,10 +52,10 @@ export const invoiceSwaggerSettings = {
     uniqueItems: false,
     nullable: false,
   },
-  сontractorsName: {
+  сontractor: {
     type: 'string',
     required: true,
-    title: 'Contractors name',
+    title: 'Contractor',
     description: "Invoice сontractor's name",
     example: 'First name last mame',
     nullable: false,

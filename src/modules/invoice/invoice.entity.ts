@@ -1,7 +1,15 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-import { ApiProperty } from '@nestjs/swagger';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  ManyToOne,
+} from 'typeorm';
+import { ApiProperty, ApiTags } from '@nestjs/swagger';
 import { invoiceSwaggerSettings } from './data/invoice.swagger';
+import { Contractor } from '../contractor/contractor.entity';
 
+@ApiTags('InvoiceModel')
 @Entity()
 export class Invoice {
   @ApiProperty(invoiceSwaggerSettings.id)
@@ -28,11 +36,11 @@ export class Invoice {
   @Column({ type: 'int', nullable: false })
   VATrate: number;
 
-  @ApiProperty(invoiceSwaggerSettings.сontractorsName)
-  @Column({ type: 'varchar', nullable: false })
-  сontractorsName: string;
-
-  @ApiProperty(invoiceSwaggerSettings.сontractorsName)
+  @ApiProperty(invoiceSwaggerSettings.delete)
   @Column({ type: 'bool', nullable: false, default: false })
   deleted: boolean;
+
+  @ApiProperty(invoiceSwaggerSettings.сontractor)
+  @ManyToOne(() => Contractor, (contractor) => contractor.id)
+  contractor: Contractor;
 }

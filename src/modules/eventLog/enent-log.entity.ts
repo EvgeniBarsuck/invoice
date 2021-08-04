@@ -1,22 +1,22 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
-import { invoiceSwaggerSettings } from './data/event-log.swagger';
+import { eventlogSwaggerSettings } from './data/event-log.swagger';
 
 @Entity()
 export class EventLog {
-  @ApiProperty(invoiceSwaggerSettings.id)
+  @ApiProperty(eventlogSwaggerSettings.id)
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ApiProperty(invoiceSwaggerSettings.eventType)
+  @ApiProperty(eventlogSwaggerSettings.eventType)
   @Column({ type: 'varchar', nullable: false })
   eventType: string;
 
-  @ApiProperty(invoiceSwaggerSettings.event)
+  @ApiProperty(eventlogSwaggerSettings.event)
   @Column({ type: 'varchar', nullable: false })
   event: string;
 
-  @ApiProperty(invoiceSwaggerSettings.createdAt)
+  @ApiProperty(eventlogSwaggerSettings.createdAt)
   @Column({ type: 'timestamp', nullable: false })
   createdAt: Date;
 

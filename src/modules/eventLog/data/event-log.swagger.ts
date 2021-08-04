@@ -1,4 +1,4 @@
-export const invoiceSwaggerSettings = {
+export const eventlogSwaggerSettings = {
   id: {
     description: 'Event id',
     example: '1',

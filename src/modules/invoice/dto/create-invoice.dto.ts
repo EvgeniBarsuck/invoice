@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { invoiceSwaggerSettings } from '../data/invoice.swagger';
 import { IsString, IsInt, MinLength, Min, Max } from 'class-validator';
+import { Contractor } from 'src/modules/contractor/contractor.entity';
 
 export class CreateInvoiceDto {
   @IsString()
@@ -35,6 +36,6 @@ export class CreateInvoiceDto {
   @MinLength(5, {
     message: "Contractors name can't be less than 5",
   })
-  @ApiProperty(invoiceSwaggerSettings.сontractorsName)
-  сontractorsName: string;
+  @ApiProperty(invoiceSwaggerSettings.сontractor)
+  сontractor: Contractor;
 }

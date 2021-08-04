@@ -23,13 +23,11 @@ export class InvoiceService {
   async create(createInvoiceDto: CreateInvoiceDto) {
     try {
       const invoice = await this.invoiceRepository.save(createInvoiceDto);
-
       await this.eventlogRepository.save({
         createdAt: new Date(),
         eventType: EventType.ADD_INVOICE,
         event: invoice.id,
       });
-
       return invoice;
     } catch (error) {
       throw new InternalServerErrorException(error);
@@ -38,10 +36,16 @@ export class InvoiceService {
 
   async findAll(conditions: ConditionsInvoiceDto) {
     try {
-      return await this.invoiceRepository.find({
-        сontractorsName: Like(`%${conditions?.сontractorsName || ''}%`),
-        position: Like(`%${conditions?.position || ''}%`),
-      });
+      return await this.invoiceRepository
+        .createQueryBuilder('invoice')
+        .leftJoinAndSelect('invoice.contractor', 'contractor')
+        .where('contractor.firstName like :firstName', {
+          firstName: `%${conditions.firstName}}%`,
+        })
+        .andWhere('contractor.lastName like :lastName', {
+          lastName: `%${conditions.lastName}}%`,
+        })
+        .getMany();
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
@@ -49,7 +53,13 @@ export class InvoiceService {
 
   async findById(id: string) {
     try {
-      const invoice = await this.invoiceRepository.findOne(id);
+      const invoice = await this.invoiceRepository
+        .createQueryBuilder('invoice')
+        .leftJoinAndSelect('invoice.contractor', 'contractor')
+        .where('invoice.id = :id', {
+          id,
+        })
+        .getOne();
 
       if (!invoice) {
         throw new HttpException('Invoice not found', HttpStatus.NOT_FOUND);
